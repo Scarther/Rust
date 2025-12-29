@@ -1,0 +1,55 @@
+[package]
+name = "custom_protocol"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Custom encrypted network protocol implementation with handshake, key exchange, and message framing"
+license = "MIT"
+readme = "README.md"
+keywords = ["protocol", "encryption", "security", "networking", "crypto"]
+categories = ["network-programming", "cryptography"]
+
+[dependencies]
+# Cryptography
+aes-gcm = "0.10"
+x25519-dalek = "2.0"
+sha2 = "0.10"
+hmac = "0.12"
+hkdf = "0.12"
+rand = "0.8"
+
+# Networking
+tokio = { version = "1.35", features = ["full"] }
+bytes = "1.5"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+bincode = "1.3"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+zeroize = { version = "1.7", features = ["derive"] }
+constant_time_eq = "0.3"
+crc32fast = "1.3"
+
+[dev-dependencies]
+tokio-test = "0.4"
+
+[features]
+default = []
+debug-protocol = []
+
+[[bin]]
+name = "protocol_server"
+path = "src/bin/server.rs"
+
+[[bin]]
+name = "protocol_client"
+path = "src/bin/client.rs"

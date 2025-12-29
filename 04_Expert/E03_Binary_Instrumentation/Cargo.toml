@@ -1,0 +1,56 @@
+[package]
+name = "binary_instrumentation"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Basic binary instrumentation and analysis for ELF files on Linux"
+license = "MIT"
+readme = "README.md"
+keywords = ["binary", "instrumentation", "elf", "security", "analysis"]
+categories = ["development-tools", "os::linux-apis"]
+
+[dependencies]
+# ELF parsing
+goblin = "0.8"
+
+# Memory manipulation
+memmap2 = "0.9"
+
+# Process manipulation
+nix = { version = "0.27", features = ["process", "ptrace", "signal"] }
+libc = "0.2"
+
+# Disassembly
+iced-x86 = { version = "1.21", features = ["std", "decoder", "formatter"] }
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Hex display
+hex = "0.4"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Proc filesystem
+procfs = "0.16"
+
+[dev-dependencies]
+tempfile = "3.9"
+
+[features]
+default = []
+live-instrumentation = []
+
+[[bin]]
+name = "binstrument"
+path = "src/main.rs"
