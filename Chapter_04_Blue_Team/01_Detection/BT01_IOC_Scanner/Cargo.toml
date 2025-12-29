@@ -1,0 +1,40 @@
+[package]
+name = "bt01_ioc_scanner"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Professional"]
+description = "Indicators of Compromise (IOC) Scanner for Blue Team operations"
+keywords = ["security", "ioc", "detection", "blue-team", "threat-hunting"]
+categories = ["command-line-utilities", "security"]
+
+[dependencies]
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Async runtime for concurrent scanning
+tokio = { version = "1.34", features = ["full"] }
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Serialization for IOC databases
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# File hashing
+sha2 = "0.10"
+md-5 = "0.10"
+# Regular expressions for pattern matching
+regex = "1.10"
+# File system walking
+walkdir = "2.4"
+# Colored output
+colored = "2.0"
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+# Hex encoding for hash display
+hex = "0.4"
+
+[dev-dependencies]
+tempfile = "3.8"
+
+[[bin]]
+name = "ioc-scanner"
+path = "src/main.rs"

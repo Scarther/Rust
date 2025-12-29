@@ -1,0 +1,39 @@
+[package]
+name = "rt01_subdomain_enum"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Subdomain enumeration tool for authorized security testing"
+license = "MIT"
+
+[dependencies]
+# Async runtime for concurrent DNS queries
+tokio = { version = "1.35", features = ["full"] }
+# DNS resolution library
+trust-dns-resolver = "0.23"
+# HTTP client for web-based enumeration
+reqwest = { version = "0.11", features = ["json", "rustls-tls"] }
+# Command-line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Async utilities
+futures = "0.3"
+# Progress bar
+indicatif = "0.17"
+# Serialization for wordlists and output
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Regular expressions for parsing
+regex = "1.10"
+# Rate limiting
+governor = "0.6"
+# Random selection
+rand = "0.8"
+
+[[bin]]
+name = "subdomain-enum"
+path = "src/main.rs"

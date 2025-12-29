@@ -1,0 +1,18 @@
+[package]
+name = "g01_hello_gui"
+version = "0.1.0"
+edition = "2021"
+description = "Simple GUI window with buttons and text - Rust Security Bible"
+authors = ["Security Developer"]
+
+[dependencies]
+# eframe bundles egui with a native backend
+eframe = "0.29"
+# egui is the immediate mode GUI library
+egui = "0.29"
+# For additional icons and styling
+egui_extras = { version = "0.29", features = ["all_loaders"] }
+
+[profile.release]
+opt-level = 3
+lto = true

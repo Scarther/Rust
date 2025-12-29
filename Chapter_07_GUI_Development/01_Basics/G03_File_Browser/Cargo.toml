@@ -1,0 +1,21 @@
+[package]
+name = "g03_file_browser"
+version = "0.1.0"
+edition = "2021"
+description = "File selection dialog and browser - Rust Security Bible"
+authors = ["Security Developer"]
+
+[dependencies]
+eframe = "0.29"
+egui = "0.29"
+egui_extras = { version = "0.29", features = ["all_loaders"] }
+# For native file dialogs
+rfd = "0.15"
+# For file metadata and permissions
+chrono = "0.4"
+# For human-readable file sizes
+humansize = "2"
+
+[profile.release]
+opt-level = 3
+lto = true

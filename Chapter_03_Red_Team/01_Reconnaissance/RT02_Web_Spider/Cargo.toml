@@ -1,0 +1,43 @@
+[package]
+name = "rt02_web_spider"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Web crawler/spider for authorized security reconnaissance"
+license = "MIT"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+# HTTP client for web requests
+reqwest = { version = "0.11", features = ["cookies", "rustls-tls"] }
+# HTML parsing
+scraper = "0.18"
+# URL parsing and manipulation
+url = "2.5"
+# Command-line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Async utilities
+futures = "0.3"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Regular expressions
+regex = "1.10"
+# Progress indication
+indicatif = "0.17"
+# Rate limiting
+governor = "0.6"
+# Hash maps with insertion order
+indexmap = { version = "2.1", features = ["serde"] }
+# Robots.txt parsing
+robotstxt = "0.3"
+
+[[bin]]
+name = "web-spider"
+path = "src/main.rs"

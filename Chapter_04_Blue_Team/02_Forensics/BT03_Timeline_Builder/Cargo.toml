@@ -1,0 +1,37 @@
+[package]
+name = "bt03_timeline_builder"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Professional"]
+description = "Forensic timeline builder for incident investigation and analysis"
+keywords = ["security", "forensics", "timeline", "blue-team", "incident-response"]
+categories = ["command-line-utilities", "security"]
+
+[dependencies]
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# CSV support for output
+csv = "1.3"
+# Regular expressions
+regex = "1.10"
+# File system walking
+walkdir = "2.4"
+# Colored output
+colored = "2.0"
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+# HTML output
+maud = "0.26"
+
+[dev-dependencies]
+tempfile = "3.8"
+
+[[bin]]
+name = "timeline-builder"
+path = "src/main.rs"

@@ -1,0 +1,33 @@
+[package]
+name = "rt05_persistence_check"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Persistence mechanism checker for authorized security assessments"
+license = "MIT"
+
+[dependencies]
+# Command-line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Regular expressions
+regex = "1.10"
+# File walking
+walkdir = "2.4"
+# Home directory
+dirs = "5.0"
+# Date/time
+chrono = "0.4"
+# File metadata
+filetime = "0.2"
+
+[[bin]]
+name = "persist-check"
+path = "src/main.rs"
