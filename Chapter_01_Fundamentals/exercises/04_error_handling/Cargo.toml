@@ -1,0 +1,12 @@
+[package]
+name = "error_handling_exercises"
+version = "0.1.0"
+edition = "2021"
+description = "Rust Result and Option exercises for security programming"
+authors = ["Rust Security Bible"]
+
+[dependencies]
+
+[[bin]]
+name = "error_handling_exercises"
+path = "src/main.rs"

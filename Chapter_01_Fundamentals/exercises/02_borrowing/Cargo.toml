@@ -1,0 +1,12 @@
+[package]
+name = "borrowing_exercises"
+version = "0.1.0"
+edition = "2021"
+description = "Rust borrowing and references exercises for security programming"
+authors = ["Rust Security Bible"]
+
+[dependencies]
+
+[[bin]]
+name = "borrowing_exercises"
+path = "src/main.rs"
