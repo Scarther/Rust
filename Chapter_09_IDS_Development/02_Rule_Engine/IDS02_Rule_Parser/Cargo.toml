@@ -1,0 +1,28 @@
+[package]
+name = "ids02_rule_parser"
+version = "0.1.0"
+edition = "2021"
+description = "Parse Snort/Suricata-like IDS rules with full options support"
+authors = ["Security Developer"]
+keywords = ["ids", "snort", "suricata", "rules", "security"]
+
+[dependencies]
+# Regex for pattern matching in rules
+regex = "1.10"
+# Serialization for rule export
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Error handling
+thiserror = "1.0"
+# CLI interface
+clap = { version = "4.4", features = ["derive"] }
+# Colored output
+colored = "2.1"
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Hex decoding for content patterns
+hex = "0.4"
+
+[dev-dependencies]
+tempfile = "3.10"

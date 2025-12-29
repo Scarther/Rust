@@ -1,0 +1,38 @@
+[package]
+name = "ids04_alert_manager"
+version = "0.1.0"
+edition = "2021"
+description = "Alert generation, deduplication, correlation, and management for IDS"
+authors = ["Security Developer"]
+keywords = ["ids", "alerts", "security", "correlation", "monitoring"]
+
+[dependencies]
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Error handling
+thiserror = "1.0"
+# CLI interface
+clap = { version = "4.4", features = ["derive"] }
+# Colored output
+colored = "2.1"
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+# UUID for alert IDs
+uuid = { version = "1.6", features = ["v4", "serde"] }
+# Database for persistent storage
+rusqlite = { version = "0.31", features = ["bundled"] }
+# Priority queue for alert ordering
+priority-queue = "2.0"
+# Dashmap for concurrent access
+dashmap = "5.5"
+# Channels for async messaging
+async-channel = "2.1"
+
+[dev-dependencies]
+tempfile = "3.10"

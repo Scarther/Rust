@@ -1,0 +1,149 @@
+version: '3.8'
+
+# Rust Security Training Lab
+# Provides isolated environment for developing and testing security tools
+
+networks:
+  rust_lab:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+services:
+  # ===========================================
+  # Development Environment
+  # ===========================================
+  rust-dev:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.rust-dev
+    container_name: rust_dev
+    hostname: rust-dev
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.10
+    volumes:
+      - ../:/workspace:rw
+      - cargo-cache:/root/.cargo
+      - rust-target:/workspace/target
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    ports:
+      - "2222:22"     # SSH access
+      - "8080:8080"   # Dev server
+    environment:
+      - RUST_BACKTRACE=1
+      - CARGO_HOME=/root/.cargo
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+
+  # ===========================================
+  # Target Linux Server
+  # ===========================================
+  target-linux:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.target-linux
+    container_name: target_linux
+    hostname: target-linux
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.20
+    ports:
+      - "2223:22"
+      - "8081:80"
+    volumes:
+      - ./targets/linux:/data:ro
+
+  # ===========================================
+  # Vulnerable Web Application
+  # ===========================================
+  vuln-web:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.vuln-web
+    container_name: vuln_web
+    hostname: vuln-web
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.30
+    ports:
+      - "8082:80"
+      - "8443:443"
+
+  # ===========================================
+  # Network Services Target
+  # ===========================================
+  services-target:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.services
+    container_name: services_target
+    hostname: services
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.40
+    ports:
+      - "2121:21"   # FTP
+      - "2525:25"   # SMTP
+      - "8083:80"   # HTTP
+      - "4433:443"  # HTTPS
+
+  # ===========================================
+  # Database Server (for testing)
+  # ===========================================
+  database:
+    image: postgres:15-alpine
+    container_name: rust_db
+    hostname: database
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.50
+    environment:
+      - POSTGRES_USER=rustlab
+      - POSTGRES_PASSWORD=labpassword
+      - POSTGRES_DB=security_lab
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  # ===========================================
+  # Redis (for caching/testing)
+  # ===========================================
+  redis:
+    image: redis:7-alpine
+    container_name: rust_redis
+    hostname: redis
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.51
+    ports:
+      - "6379:6379"
+
+  # ===========================================
+  # Log Collector
+  # ===========================================
+  log-collector:
+    build:
+      context: ./dockerfiles
+      dockerfile: Dockerfile.log-collector
+    container_name: log_collector
+    hostname: logs
+    networks:
+      rust_lab:
+        ipv4_address: 172.30.0.60
+    ports:
+      - "5514:514/udp"   # Syslog
+      - "8084:8080"      # Web UI
+    volumes:
+      - logs-data:/var/log/collected
+
+volumes:
+  cargo-cache:
+  rust-target:
+  postgres-data:
+  logs-data:

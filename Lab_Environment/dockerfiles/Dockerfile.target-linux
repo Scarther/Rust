@@ -1,0 +1,56 @@
+# Target Linux Server
+# Simulates a typical server for scanning/testing
+
+FROM ubuntu:22.04
+
+LABEL description="Target Linux server for security testing"
+
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    nginx \
+    vsftpd \
+    netcat-openbsd \
+    curl \
+    python3 \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Setup SSH
+RUN mkdir /var/run/sshd && \
+    echo 'root:targetpass' | chpasswd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Create test user
+RUN useradd -m -s /bin/bash testuser && \
+    echo 'testuser:password123' | chpasswd
+
+# Create fake sensitive files
+RUN mkdir -p /home/testuser/.ssh && \
+    echo "-----BEGIN OPENSSH PRIVATE KEY-----" > /home/testuser/.ssh/id_rsa && \
+    echo "FAKE_KEY_FOR_TESTING_ONLY" >> /home/testuser/.ssh/id_rsa && \
+    echo "-----END OPENSSH PRIVATE KEY-----" >> /home/testuser/.ssh/id_rsa && \
+    chmod 600 /home/testuser/.ssh/id_rsa
+
+RUN mkdir -p /home/testuser/Documents && \
+    echo "Confidential: Budget Q4 2024" > /home/testuser/Documents/budget.txt && \
+    echo "Password: supersecret123" > /home/testuser/.credentials
+
+# Configure nginx
+RUN echo "server { listen 80; root /var/www/html; }" > /etc/nginx/sites-available/default
+
+# Create web content
+RUN mkdir -p /var/www/html && \
+    echo "<h1>Target Server</h1><p>Welcome to the test server.</p>" > /var/www/html/index.html && \
+    echo "robots.txt: Disallow: /admin/" > /var/www/html/robots.txt && \
+    mkdir -p /var/www/html/admin && \
+    echo "Admin Panel (simulated)" > /var/www/html/admin/index.html
+
+# Startup script
+RUN echo '#!/bin/bash\n\
+service ssh start\n\
+nginx -g "daemon off;"\n\
+' > /start.sh && chmod +x /start.sh
+
+EXPOSE 22 80
+
+CMD ["/start.sh"]

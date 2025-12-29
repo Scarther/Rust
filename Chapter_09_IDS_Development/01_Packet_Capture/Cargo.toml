@@ -1,0 +1,16 @@
+[package]
+name = "packet-capture"
+version = "0.1.0"
+edition = "2021"
+description = "Packet capture engine for IDS"
+authors = ["Rust Security Bible"]
+
+[dependencies]
+pcap = "1.1"
+pnet = "0.34"
+clap = { version = "4.4", features = ["derive"] }
+ctrlc = "3.4"
+
+[profile.release]
+opt-level = 3
+lto = true

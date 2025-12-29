@@ -1,0 +1,86 @@
+# Rust Security Development Environment
+FROM rust:1.75-bookworm
+
+LABEL maintainer="Rust Security Bible"
+LABEL description="Complete Rust development environment for security tools"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    # Build essentials
+    build-essential \
+    pkg-config \
+    cmake \
+    # Networking tools
+    libpcap-dev \
+    tcpdump \
+    nmap \
+    netcat-openbsd \
+    dnsutils \
+    curl \
+    wget \
+    # SSL/TLS
+    libssl-dev \
+    openssl \
+    ca-certificates \
+    # Development tools
+    git \
+    vim \
+    tmux \
+    htop \
+    strace \
+    ltrace \
+    gdb \
+    # SSH server
+    openssh-server \
+    # Python (for testing scripts)
+    python3 \
+    python3-pip \
+    # Misc
+    jq \
+    tree \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install additional Rust tools
+RUN rustup component add \
+    clippy \
+    rustfmt \
+    rust-src \
+    rust-analyzer
+
+# Install cross-compilation targets
+RUN rustup target add \
+    x86_64-unknown-linux-musl \
+    x86_64-pc-windows-gnu \
+    aarch64-unknown-linux-gnu
+
+# Install musl tools for static compilation
+RUN apt-get update && apt-get install -y musl-tools && rm -rf /var/lib/apt/lists/*
+
+# Install useful cargo tools
+RUN cargo install \
+    cargo-edit \
+    cargo-watch \
+    cargo-audit \
+    cargo-outdated \
+    cargo-expand \
+    cross
+
+# Setup SSH
+RUN mkdir /var/run/sshd && \
+    echo 'root:rustlab' | chpasswd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Create workspace
+WORKDIR /workspace
+
+# Default shell configuration
+RUN echo 'PS1="\[\033[1;32m\][rust-dev]\[\033[0m\] \w $ "' >> /root/.bashrc && \
+    echo 'alias ll="ls -la"' >> /root/.bashrc && \
+    echo 'alias cb="cargo build"' >> /root/.bashrc && \
+    echo 'alias cr="cargo run"' >> /root/.bashrc && \
+    echo 'alias ct="cargo test"' >> /root/.bashrc && \
+    echo 'alias cc="cargo clippy"' >> /root/.bashrc
+
+EXPOSE 22 8080
+
+CMD ["/usr/sbin/sshd", "-D"]

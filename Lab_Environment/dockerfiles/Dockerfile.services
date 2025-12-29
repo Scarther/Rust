@@ -1,0 +1,89 @@
+# Network Services Target
+# Multiple services for port scanning and banner grabbing tests
+
+FROM ubuntu:22.04
+
+LABEL description="Multiple network services for testing"
+
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    nginx \
+    vsftpd \
+    postfix \
+    netcat-openbsd \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure SSH with banner
+RUN mkdir /var/run/sshd && \
+    echo 'root:services123' | chpasswd && \
+    echo "SSH-2.0-OpenSSH_8.9 Ubuntu-3ubuntu0.4" > /etc/ssh/banner && \
+    echo "Banner /etc/ssh/banner" >> /etc/ssh/sshd_config
+
+# Configure nginx with custom banner
+RUN echo 'server { \
+    listen 80; \
+    server_name localhost; \
+    add_header X-Powered-By "TestServer/1.0"; \
+    location / { \
+        return 200 "HTTP Service Running\n"; \
+        add_header Content-Type text/plain; \
+    } \
+}' > /etc/nginx/sites-available/default
+
+# Configure FTP
+RUN echo "anonymous_enable=YES" >> /etc/vsftpd.conf && \
+    echo "local_enable=YES" >> /etc/vsftpd.conf && \
+    echo "ftpd_banner=Welcome to Lab FTP Server" >> /etc/vsftpd.conf && \
+    mkdir -p /var/ftp/pub && \
+    echo "FTP test file" > /var/ftp/pub/readme.txt
+
+# Create custom services script
+RUN cat > /services.py << 'EOF'
+#!/usr/bin/env python3
+"""Simple network services for testing"""
+import socket
+import threading
+
+def echo_server(port, banner):
+    """Simple TCP server with banner"""
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(('0.0.0.0', port))
+    sock.listen(5)
+    print(f"Echo server on port {port}")
+    while True:
+        client, addr = sock.accept()
+        client.send(f"{banner}\n".encode())
+        client.close()
+
+# Start custom services
+threads = [
+    threading.Thread(target=echo_server, args=(7777, "CustomService/1.0")),
+    threading.Thread(target=echo_server, args=(8888, "TestDaemon/2.1")),
+    threading.Thread(target=echo_server, args=(9999, "LabService/3.0")),
+]
+for t in threads:
+    t.daemon = True
+    t.start()
+
+# Keep main thread alive
+import time
+while True:
+    time.sleep(3600)
+EOF
+
+# Startup script
+RUN cat > /start.sh << 'EOF'
+#!/bin/bash
+service ssh start
+service nginx start
+service vsftpd start || true
+python3 /services.py &
+tail -f /dev/null
+EOF
+RUN chmod +x /start.sh
+
+EXPOSE 21 22 25 80 443 7777 8888 9999
+
+CMD ["/start.sh"]

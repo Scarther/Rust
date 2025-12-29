@@ -1,0 +1,138 @@
+# Vulnerable Web Application
+# For testing web security scanning tools
+
+FROM python:3.11-slim
+
+LABEL description="Intentionally vulnerable web app for testing"
+
+RUN pip install flask requests
+
+WORKDIR /app
+
+# Create vulnerable Flask application
+RUN cat > /app/app.py << 'EOF'
+#!/usr/bin/env python3
+"""
+Intentionally Vulnerable Web Application
+For security tool testing only
+"""
+from flask import Flask, request, render_template_string
+import sqlite3
+import os
+
+app = Flask(__name__)
+
+# Initialize SQLite database
+def init_db():
+    conn = sqlite3.connect('/tmp/vuln.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (id INTEGER PRIMARY KEY, username TEXT, password TEXT)''')
+    c.execute("INSERT OR IGNORE INTO users VALUES (1, 'admin', 'admin123')")
+    c.execute("INSERT OR IGNORE INTO users VALUES (2, 'user', 'password')")
+    conn.commit()
+    conn.close()
+
+@app.route('/')
+def index():
+    return '''
+    <h1>Vulnerable Web Application</h1>
+    <p>For security testing only</p>
+    <ul>
+        <li><a href="/search">/search - SQL Injection</a></li>
+        <li><a href="/hello">/hello - XSS Vulnerability</a></li>
+        <li><a href="/cmd">/cmd - Command Injection</a></li>
+        <li><a href="/api/users">/api/users - API Endpoint</a></li>
+        <li><a href="/admin">/admin - Hidden Admin</a></li>
+        <li><a href="/.git/config">/.git/config - Exposed Git</a></li>
+    </ul>
+    '''
+
+# SQL Injection vulnerability
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    if query:
+        conn = sqlite3.connect('/tmp/vuln.db')
+        c = conn.cursor()
+        # VULNERABLE: SQL Injection
+        sql = f"SELECT * FROM users WHERE username LIKE '%{query}%'"
+        try:
+            c.execute(sql)
+            results = c.fetchall()
+            conn.close()
+            return f"<h2>Search Results</h2><pre>{results}</pre>"
+        except Exception as e:
+            return f"<h2>Error</h2><pre>{e}</pre>"
+    return '''
+    <h2>User Search</h2>
+    <form action="/search" method="get">
+        <input type="text" name="q" placeholder="Search users...">
+        <button type="submit">Search</button>
+    </form>
+    <p>Try: ' OR 1=1--</p>
+    '''
+
+# XSS vulnerability
+@app.route('/hello')
+def hello():
+    name = request.args.get('name', 'World')
+    # VULNERABLE: Reflected XSS
+    template = f"<h2>Hello, {name}!</h2>"
+    return render_template_string(template)
+
+# Command injection vulnerability
+@app.route('/cmd')
+def cmd():
+    command = request.args.get('ip', '')
+    if command:
+        # VULNERABLE: Command Injection
+        result = os.popen(f"ping -c 1 {command}").read()
+        return f"<h2>Ping Result</h2><pre>{result}</pre>"
+    return '''
+    <h2>Ping Test</h2>
+    <form action="/cmd" method="get">
+        <input type="text" name="ip" placeholder="Enter IP...">
+        <button type="submit">Ping</button>
+    </form>
+    <p>Try: 127.0.0.1; cat /etc/passwd</p>
+    '''
+
+# API endpoint
+@app.route('/api/users')
+def api_users():
+    conn = sqlite3.connect('/tmp/vuln.db')
+    c = conn.cursor()
+    c.execute("SELECT id, username FROM users")
+    users = [{"id": row[0], "username": row[1]} for row in c.fetchall()]
+    conn.close()
+    return {"users": users}
+
+# Hidden admin panel
+@app.route('/admin')
+def admin():
+    return '''
+    <h2>Admin Panel</h2>
+    <p>Secret admin area</p>
+    <p>Flag: FLAG{admin_panel_found}</p>
+    '''
+
+# Exposed sensitive file
+@app.route('/.git/config')
+def git_config():
+    return '''[core]
+    repositoryformatversion = 0
+    filemode = true
+[remote "origin"]
+    url = https://github.com/company/secret-repo.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+'''
+
+if __name__ == '__main__':
+    init_db()
+    app.run(host='0.0.0.0', port=80)
+EOF
+
+EXPOSE 80 443
+
+CMD ["python3", "/app/app.py"]

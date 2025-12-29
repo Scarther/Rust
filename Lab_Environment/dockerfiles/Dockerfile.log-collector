@@ -1,0 +1,126 @@
+# Log Collector Service
+# Collects and displays logs from lab activities
+
+FROM python:3.11-slim
+
+LABEL description="Log collector for security lab"
+
+RUN pip install flask
+
+WORKDIR /app
+
+RUN cat > /app/collector.py << 'EOF'
+#!/usr/bin/env python3
+"""
+Log Collector for Rust Security Lab
+Receives logs via HTTP and Syslog
+"""
+import socket
+import threading
+import json
+from datetime import datetime
+from flask import Flask, request, jsonify, render_template_string
+
+app = Flask(__name__)
+logs = []
+
+# HTML Template
+TEMPLATE = '''
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab Log Collector</title>
+    <style>
+        body { font-family: monospace; background: #1a1a2e; color: #eee; margin: 20px; }
+        h1 { color: #00ff88; }
+        .log { background: #16213e; padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .log.INFO { border-left: 4px solid #00ff88; }
+        .log.WARN { border-left: 4px solid #ffaa00; }
+        .log.ERROR { border-left: 4px solid #ff4444; }
+        .log.ALERT { border-left: 4px solid #ff00ff; }
+        .timestamp { color: #888; }
+        .source { color: #00aaff; }
+        pre { white-space: pre-wrap; margin: 5px 0; }
+        .controls { margin: 20px 0; }
+        button { background: #00ff88; color: #000; border: none; padding: 10px 20px; cursor: pointer; }
+    </style>
+    <script>
+        function refresh() { location.reload(); }
+        function clear() { fetch('/api/clear', {method: 'POST'}).then(() => refresh()); }
+        setInterval(refresh, 5000);
+    </script>
+</head>
+<body>
+    <h1>🔒 Rust Security Lab - Log Collector</h1>
+    <div class="controls">
+        <button onclick="refresh()">Refresh</button>
+        <button onclick="clear()">Clear Logs</button>
+        <span style="margin-left: 20px;">{{ logs|length }} logs collected</span>
+    </div>
+    {% for log in logs|reverse %}
+    <div class="log {{ log.level }}">
+        <span class="timestamp">[{{ log.timestamp }}]</span>
+        <span class="source">[{{ log.source }}]</span>
+        <strong>{{ log.level }}</strong>
+        <pre>{{ log.message }}</pre>
+    </div>
+    {% endfor %}
+</body>
+</html>
+'''
+
+@app.route('/')
+def index():
+    return render_template_string(TEMPLATE, logs=logs[-100:])
+
+@app.route('/api/log', methods=['POST'])
+def receive_log():
+    data = request.get_json() or {}
+    log_entry = {
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'source': data.get('source', request.remote_addr),
+        'level': data.get('level', 'INFO'),
+        'message': data.get('message', str(data))
+    }
+    logs.append(log_entry)
+    print(f"[{log_entry['timestamp']}] {log_entry['source']}: {log_entry['message']}")
+    return jsonify({'status': 'ok'})
+
+@app.route('/api/logs')
+def get_logs():
+    return jsonify(logs[-100:])
+
+@app.route('/api/clear', methods=['POST'])
+def clear_logs():
+    logs.clear()
+    return jsonify({'status': 'cleared'})
+
+def syslog_server():
+    """UDP Syslog receiver"""
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('0.0.0.0', 514))
+    print("Syslog server listening on UDP 514")
+    while True:
+        data, addr = sock.recvfrom(4096)
+        log_entry = {
+            'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'source': addr[0],
+            'level': 'SYSLOG',
+            'message': data.decode('utf-8', errors='ignore').strip()
+        }
+        logs.append(log_entry)
+        print(f"[SYSLOG] {addr[0]}: {log_entry['message'][:100]}")
+
+if __name__ == '__main__':
+    # Start syslog server in background
+    syslog_thread = threading.Thread(target=syslog_server, daemon=True)
+    syslog_thread.start()
+
+    # Start web server
+    print("Log collector starting on port 8080")
+    app.run(host='0.0.0.0', port=8080)
+EOF
+
+EXPOSE 514/udp 8080
+
+CMD ["python3", "/app/collector.py"]
