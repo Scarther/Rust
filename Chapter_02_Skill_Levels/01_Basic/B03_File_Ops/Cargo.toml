@@ -1,0 +1,23 @@
+[package]
+name = "file_ops"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Security-focused file operations utility for reading, writing, copying, and managing file permissions"
+license = "MIT"
+
+[dependencies]
+# Command-line argument parsing with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# Enhanced error handling with context
+anyhow = "1.0"
+# Custom error types with derive macros
+thiserror = "1.0"
+# Colored terminal output for better visibility
+colored = "2.0"
+# Cross-platform file metadata and permissions
+# Note: On Unix systems, we also use std::os::unix::fs for extended permissions
+
+[dev-dependencies]
+# For creating temporary files/directories in tests
+tempfile = "3.8"

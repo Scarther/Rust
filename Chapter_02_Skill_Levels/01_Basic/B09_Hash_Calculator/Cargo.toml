@@ -1,0 +1,13 @@
+[package]
+name = "b09_hash_calculator"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Student"]
+description = "B09: Cryptographic hash calculator for file integrity"
+
+[dependencies]
+sha2 = "0.10"
+md-5 = "0.10"
+sha1 = "0.10"
+hex = "0.4"
+clap = { version = "4.4", features = ["derive"] }

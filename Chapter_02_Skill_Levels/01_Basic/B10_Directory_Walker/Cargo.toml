@@ -1,0 +1,25 @@
+[package]
+name = "directory_walker"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Recursively walk directories and find files by pattern - Security focused file discovery tool"
+license = "MIT"
+
+[dependencies]
+# clap - Command Line Argument Parser with derive macros for easy CLI creation
+clap = { version = "4.4", features = ["derive"] }
+# walkdir - Efficient recursive directory traversal
+walkdir = "2.4"
+# glob - Unix shell-style pattern matching
+glob = "0.3"
+# colored - Terminal text coloring for better output visibility
+colored = "2.1"
+# chrono - Date and time handling for file timestamps
+chrono = "0.4"
+# humansize - Human-readable file sizes
+humansize = "2.1"
+
+[dev-dependencies]
+# tempfile - Create temporary files/directories for testing
+tempfile = "3.10"

@@ -1,0 +1,22 @@
+[package]
+name = "ip_validator"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Validate and parse IP addresses with CIDR notation - Network security tool"
+license = "MIT"
+
+[dependencies]
+# clap - Command Line Argument Parser
+clap = { version = "4.4", features = ["derive"] }
+# colored - Terminal coloring
+colored = "2.1"
+# ipnetwork - IP address and CIDR handling
+ipnetwork = "0.20"
+# serde - Serialization
+serde = { version = "1.0", features = ["derive"] }
+# serde_json - JSON output
+serde_json = "1.0"
+
+[dev-dependencies]
+tempfile = "3.10"

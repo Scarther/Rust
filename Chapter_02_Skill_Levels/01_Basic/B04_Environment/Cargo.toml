@@ -1,0 +1,26 @@
+[package]
+name = "environment"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Security-focused environment variable inspection and manipulation tool"
+license = "MIT"
+
+[dependencies]
+# Command-line argument parsing with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# Enhanced error handling with context
+anyhow = "1.0"
+# Custom error types with derive macros
+thiserror = "1.0"
+# Colored terminal output for better visibility
+colored = "2.0"
+# Regular expressions for pattern matching
+regex = "1.10"
+# Serialization for export functionality
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+# For setting up test environments
+serial_test = "2.0"

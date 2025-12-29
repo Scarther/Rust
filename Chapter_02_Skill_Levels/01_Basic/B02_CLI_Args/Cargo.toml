@@ -1,0 +1,9 @@
+[package]
+name = "b02_cli_args"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Student"]
+description = "B02: Command-line argument parsing for security tools"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }

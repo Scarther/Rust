@@ -1,0 +1,26 @@
+[package]
+name = "timestamp_parser"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Parse and convert various timestamp formats - Essential for log analysis and forensics"
+license = "MIT"
+
+[dependencies]
+# clap - Command Line Argument Parser
+clap = { version = "4.4", features = ["derive"] }
+# chrono - Date and time handling
+chrono = { version = "0.4", features = ["serde"] }
+# chrono-tz - Timezone support
+chrono-tz = "0.8"
+# colored - Terminal coloring
+colored = "2.1"
+# regex - Pattern matching for timestamp detection
+regex = "1.10"
+# serde - Serialization
+serde = { version = "1.0", features = ["derive"] }
+# serde_json - JSON output
+serde_json = "1.0"
+
+[dev-dependencies]
+tempfile = "3.10"

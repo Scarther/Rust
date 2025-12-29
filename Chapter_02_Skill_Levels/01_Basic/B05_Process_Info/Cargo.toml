@@ -1,0 +1,27 @@
+[package]
+name = "process_info"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Security-focused process information gathering tool"
+license = "MIT"
+
+[dependencies]
+# Command-line argument parsing with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# Enhanced error handling with context
+anyhow = "1.0"
+# Custom error types with derive macros
+thiserror = "1.0"
+# Colored terminal output for better visibility
+colored = "2.0"
+# System information library for cross-platform process info
+sysinfo = "0.30"
+# User information (Unix)
+users = "0.11"
+# Serialization for export functionality
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[dev-dependencies]
+# None needed for this project

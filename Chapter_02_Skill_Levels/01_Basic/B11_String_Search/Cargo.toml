@@ -1,0 +1,24 @@
+[package]
+name = "string_search"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Search for strings/patterns in files - Security-focused grep alternative"
+license = "MIT"
+
+[dependencies]
+# clap - Command Line Argument Parser with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# regex - Regular expression support for pattern matching
+regex = "1.10"
+# walkdir - Recursive directory traversal
+walkdir = "2.4"
+# colored - Terminal text coloring
+colored = "2.1"
+# memmap2 - Memory-mapped file I/O for efficient large file handling
+memmap2 = "0.9"
+# rayon - Data parallelism for faster searching
+rayon = "1.8"
+
+[dev-dependencies]
+tempfile = "3.10"

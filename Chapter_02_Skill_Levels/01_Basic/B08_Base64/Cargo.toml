@@ -1,0 +1,26 @@
+[package]
+name = "base64_tool"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Security-focused Base64 encoding and decoding tool with analysis capabilities"
+license = "MIT"
+
+[dependencies]
+# Command-line argument parsing with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# Enhanced error handling with context
+anyhow = "1.0"
+# Custom error types with derive macros
+thiserror = "1.0"
+# Colored terminal output for better visibility
+colored = "2.0"
+# Base64 encoding/decoding library
+base64 = "0.21"
+# For hex encoding/decoding as an alternative
+hex = "0.4"
+# URL encoding/decoding
+urlencoding = "2.1"
+
+[dev-dependencies]
+# None needed for this project

@@ -1,0 +1,24 @@
+[package]
+name = "regex_matcher"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Regular expression matching tool - Essential for security pattern matching"
+license = "MIT"
+
+[dependencies]
+# clap - Command Line Argument Parser
+clap = { version = "4.4", features = ["derive"] }
+# regex - Regular expression engine
+regex = "1.10"
+# colored - Terminal coloring
+colored = "2.1"
+# serde - Serialization
+serde = { version = "1.0", features = ["derive"] }
+# serde_json - JSON output
+serde_json = "1.0"
+# lazy_static - Lazy initialization of static values
+lazy_static = "1.4"
+
+[dev-dependencies]
+tempfile = "3.10"

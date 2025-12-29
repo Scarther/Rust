@@ -1,0 +1,12 @@
+[package]
+name = "b01_hello_security"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Student"]
+description = "B01: Introduction to Rust with security-focused output"
+
+[dependencies]
+# No external dependencies for B01 - pure Rust
+
+# Optional: Uncomment for Exercise 2
+# colored = "2.0"
