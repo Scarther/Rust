@@ -1,0 +1,10 @@
+[package]
+name = "i01_port_scanner"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Student"]
+description = "I01: Multi-threaded TCP port scanner"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+colored = "2.0"

@@ -1,0 +1,34 @@
+[package]
+name = "network_enum"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Network enumeration tool with ARP scanning, ping sweep, and service detection"
+license = "MIT"
+
+[dependencies]
+# CLI argument parsing - industry standard for Rust CLIs
+clap = { version = "4.4", features = ["derive"] }
+# Network packet crafting and parsing
+pnet = "0.34"
+# Async runtime for concurrent operations
+tokio = { version = "1.34", features = ["full"] }
+# DNS resolution
+trust-dns-resolver = "0.23"
+# IP network calculations
+ipnetwork = "0.20"
+# Error handling with context
+anyhow = "1.0"
+# Colored terminal output
+colored = "2.0"
+# Serialization for output formats
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Progress indicators
+indicatif = "0.17"
+# Parallel iteration
+rayon = "1.8"
+
+[profile.release]
+opt-level = 3
+lto = true

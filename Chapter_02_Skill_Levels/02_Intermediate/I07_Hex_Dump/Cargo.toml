@@ -1,0 +1,30 @@
+[package]
+name = "hex_dump"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Hexdump utility with binary analysis, string extraction, and pattern matching"
+license = "MIT"
+
+[dependencies]
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.0"
+# Regular expressions
+regex = "1.10"
+# Hex encoding/decoding
+hex = "0.4"
+# Error handling
+anyhow = "1.0"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Memory-mapped files
+memmap2 = "0.9"
+# Entropy calculation
+entropy = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true

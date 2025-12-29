@@ -1,0 +1,43 @@
+[package]
+name = "keylogger_detector"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Advanced keylogger detection tool using input device monitoring"
+license = "MIT"
+
+[dependencies]
+# Linux input device handling
+evdev = "0.12"
+# Async runtime for concurrent monitoring
+tokio = { version = "1.35", features = ["full"] }
+# Command line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# System information
+sysinfo = "0.30"
+# Logging
+log = "0.4"
+env_logger = "0.10"
+# File system notifications
+notify = "6.1"
+# Serialization for reporting
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+# Regex for pattern matching
+regex = "1.10"
+# nix for low-level Linux operations
+nix = { version = "0.27", features = ["fs", "process", "user"] }
+
+[dev-dependencies]
+tempfile = "3.9"
+
+[[bin]]
+name = "keylogger_detector"
+path = "src/main.rs"

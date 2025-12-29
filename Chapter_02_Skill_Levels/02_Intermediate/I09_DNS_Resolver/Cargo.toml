@@ -1,0 +1,32 @@
+[package]
+name = "dns_resolver"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Developer"]
+description = "DNS lookup and enumeration tool for security reconnaissance"
+license = "MIT"
+keywords = ["dns", "resolver", "security", "enumeration", "reconnaissance"]
+
+[dependencies]
+# Tokio async runtime
+tokio = { version = "1.35", features = ["full"] }
+# Trust-DNS resolver for async DNS queries
+trust-dns-resolver = "0.23"
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+# Serialization for output formats
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Async utilities
+futures = "0.3"
+# Tables for pretty output
+tabled = "0.14"
+
+[[bin]]
+name = "dns_resolver"
+path = "src/main.rs"

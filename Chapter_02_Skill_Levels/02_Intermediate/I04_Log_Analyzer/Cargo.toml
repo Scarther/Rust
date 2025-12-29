@@ -1,0 +1,38 @@
+[package]
+name = "log_analyzer"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Security log parser and analyzer with pattern detection and alerting"
+license = "MIT"
+
+[dependencies]
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Regular expressions for log parsing
+regex = "1.10"
+# Date/time handling
+chrono = { version = "0.4", features = ["serde"] }
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Error handling
+anyhow = "1.0"
+# Colored output
+colored = "2.0"
+# Progress bars
+indicatif = "0.17"
+# Parallel processing
+rayon = "1.8"
+# File watching for real-time analysis
+notify = "6.1"
+# Lazy static for compiled regexes
+lazy_static = "1.4"
+# Memory-mapped files
+memmap2 = "0.9"
+# CSV output
+csv = "1.3"
+
+[profile.release]
+opt-level = 3
+lto = true

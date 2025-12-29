@@ -1,0 +1,40 @@
+[package]
+name = "password_cracker"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Dictionary-based password hash cracker supporting multiple hash algorithms"
+license = "MIT"
+
+[dependencies]
+# CLI argument parsing with derive macros
+clap = { version = "4.4", features = ["derive"] }
+# Cryptographic hashing algorithms
+sha2 = "0.10"
+sha1 = "0.10"
+md-5 = "0.10"
+# Generic digest trait for hash algorithms
+digest = "0.10"
+# Bcrypt password hashing
+bcrypt = "0.15"
+# Hex encoding/decoding
+hex = "0.4"
+# Base64 encoding
+base64 = "0.21"
+# Parallel iteration for multi-threaded cracking
+rayon = "1.8"
+# Error handling
+anyhow = "1.0"
+# Colored terminal output
+colored = "2.0"
+# Progress bar
+indicatif = "0.17"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Memory-mapped files for large dictionaries
+memmap2 = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = true

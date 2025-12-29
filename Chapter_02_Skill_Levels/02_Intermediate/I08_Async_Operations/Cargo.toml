@@ -1,0 +1,37 @@
+[package]
+name = "async_operations"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Developer"]
+description = "Async/await patterns for concurrent security operations"
+license = "MIT"
+keywords = ["async", "concurrent", "security", "tokio"]
+
+[dependencies]
+# Tokio - The async runtime for Rust
+tokio = { version = "1.35", features = ["full"] }
+# Futures utilities for working with async code
+futures = "0.3"
+# Async trait support (for async methods in traits)
+async-trait = "0.1"
+# Structured error handling
+thiserror = "1.0"
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# HTTP client with async support
+reqwest = { version = "0.11", features = ["json"] }
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Random number generation
+rand = "0.8"
+
+[dev-dependencies]
+# Async testing utilities
+tokio-test = "0.4"
+
+[[bin]]
+name = "async_ops"
+path = "src/main.rs"

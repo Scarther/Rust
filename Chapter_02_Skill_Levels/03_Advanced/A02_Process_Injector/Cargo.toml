@@ -1,0 +1,42 @@
+[package]
+name = "process_injector"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Educational process memory analysis and injection techniques"
+license = "MIT"
+
+[dependencies]
+# Linux system calls
+nix = { version = "0.27", features = ["ptrace", "process", "signal"] }
+libc = "0.2"
+# Command line parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Logging
+log = "0.4"
+env_logger = "0.10"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Hex encoding for shellcode
+hex = "0.4"
+# System information
+sysinfo = "0.30"
+# Memory mapping
+memmap2 = "0.9"
+# Regex for parsing
+regex = "1.10"
+# Byte order handling
+byteorder = "1.5"
+
+[dev-dependencies]
+tempfile = "3.9"
+
+[[bin]]
+name = "process_injector"
+path = "src/main.rs"

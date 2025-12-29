@@ -1,0 +1,65 @@
+[package]
+name = "crypto_tool"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Advanced cryptographic tool supporting AES, RSA, and various hashing algorithms"
+keywords = ["security", "cryptography", "encryption", "aes", "rsa"]
+
+[dependencies]
+# Command-line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+
+# Colored terminal output
+colored = "2.1"
+
+# AES encryption
+aes = "0.8"
+aes-gcm = "0.10"
+ctr = "0.9"
+cbc = { version = "0.1", features = ["std"] }
+
+# RSA encryption
+rsa = "0.9"
+
+# Hashing
+sha2 = "0.10"
+sha3 = "0.10"
+blake2 = "0.10"
+md-5 = "0.10"
+
+# HMAC
+hmac = "0.12"
+
+# Key derivation
+pbkdf2 = "0.12"
+argon2 = "0.5"
+
+# Random number generation
+rand = "0.8"
+
+# Base64 encoding
+base64 = "0.21"
+
+# Hex encoding
+hex = "0.4"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Generic array for cipher operations
+generic-array = "0.14"
+
+# For cipher traits
+cipher = "0.4"
+
+# PKCS padding
+block-padding = "0.3"
+
+[dev-dependencies]
+tempfile = "3.8"

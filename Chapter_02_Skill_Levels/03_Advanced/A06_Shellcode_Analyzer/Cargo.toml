@@ -1,0 +1,34 @@
+[package]
+name = "shellcode_analyzer"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Advanced shellcode pattern analyzer for security research"
+keywords = ["security", "shellcode", "analysis", "malware", "reverse-engineering"]
+
+[dependencies]
+# Command-line argument parsing
+clap = { version = "4.4", features = ["derive"] }
+
+# Hex encoding/decoding for shellcode input
+hex = "0.4"
+
+# Colored terminal output for highlighting dangerous patterns
+colored = "2.1"
+
+# Regex for pattern matching
+regex = "1.10"
+
+# Serialization for output formats
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# For disassembly hints
+capstone = "0.12"
+
+[dev-dependencies]
+tempfile = "3.8"

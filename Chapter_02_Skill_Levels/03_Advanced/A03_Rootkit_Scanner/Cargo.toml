@@ -1,0 +1,49 @@
+[package]
+name = "rootkit_scanner"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Advanced rootkit detection scanner for hidden processes and files"
+license = "MIT"
+
+[dependencies]
+# System information
+sysinfo = "0.30"
+# Linux system calls
+nix = { version = "0.27", features = ["fs", "process", "mount"] }
+libc = "0.2"
+# Command line parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Logging
+log = "0.4"
+env_logger = "0.10"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# File hashing
+sha2 = "0.10"
+md-5 = "0.10"
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+# Regex
+regex = "1.10"
+# Hex encoding
+hex = "0.4"
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+# Walkdir for recursive file scanning
+walkdir = "2.4"
+# Glob patterns
+glob = "0.3"
+
+[dev-dependencies]
+tempfile = "3.9"
+
+[[bin]]
+name = "rootkit_scanner"
+path = "src/main.rs"

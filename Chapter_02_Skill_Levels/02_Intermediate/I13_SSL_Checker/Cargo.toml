@@ -1,0 +1,37 @@
+[package]
+name = "ssl_checker"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Developer"]
+description = "Check SSL/TLS certificates for security analysis"
+license = "MIT"
+keywords = ["ssl", "tls", "certificate", "security", "checker"]
+
+[dependencies]
+# Tokio async runtime
+tokio = { version = "1.35", features = ["full"] }
+# TLS/SSL
+tokio-native-tls = "0.3"
+native-tls = "0.2"
+# For more detailed certificate parsing
+x509-parser = "0.15"
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Date/time handling
+chrono = { version = "0.4", features = ["serde"] }
+# Tables for output
+tabled = "0.14"
+# Async utilities
+futures = "0.3"
+
+[[bin]]
+name = "ssl_checker"
+path = "src/main.rs"

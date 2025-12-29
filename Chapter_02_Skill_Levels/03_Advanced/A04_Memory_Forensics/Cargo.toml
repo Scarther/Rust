@@ -1,0 +1,48 @@
+[package]
+name = "memory_forensics"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Researcher"]
+description = "Advanced memory forensics and analysis tool"
+license = "MIT"
+
+[dependencies]
+# Linux system calls
+nix = { version = "0.27", features = ["ptrace", "process", "mman"] }
+libc = "0.2"
+# Command line parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored output
+colored = "2.1"
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+# Logging
+log = "0.4"
+env_logger = "0.10"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+# Regex for pattern matching
+regex = "1.10"
+# Hex encoding
+hex = "0.4"
+# Memory mapping
+memmap2 = "0.9"
+# Byte order handling
+byteorder = "1.5"
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+# System info
+sysinfo = "0.30"
+# Hashing
+sha2 = "0.10"
+
+[dev-dependencies]
+tempfile = "3.9"
+
+[[bin]]
+name = "memory_forensics"
+path = "src/main.rs"

@@ -1,0 +1,37 @@
+[package]
+name = "encoding_converter"
+version = "0.1.0"
+edition = "2021"
+authors = ["Security Developer"]
+description = "Convert between various encodings for security analysis"
+license = "MIT"
+keywords = ["encoding", "base64", "hex", "url", "security"]
+
+[dependencies]
+# CLI argument parsing
+clap = { version = "4.4", features = ["derive"] }
+# Colored terminal output
+colored = "2.1"
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+# Base64 encoding
+base64 = "0.21"
+# Hex encoding
+hex = "0.4"
+# URL encoding
+urlencoding = "2.1"
+# HTML entities
+html-escape = "0.2"
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+# Unicode normalization
+unicode-normalization = "0.1"
+# Percent encoding (more control than urlencoding)
+percent-encoding = "2.3"
+# ROT13 and other ciphers (manual implementation)
+
+[[bin]]
+name = "encoder"
+path = "src/main.rs"
