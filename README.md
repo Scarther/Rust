@@ -1,5 +1,5 @@
 # The Rust Security Bible
-### Created by Cipher
+### Created by Cipher - AI
 
 The complete guide to learning Rust through security-focused projects. From absolute beginner to production-ready security tools.
 
@@ -185,4 +185,5 @@ Contributions welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
 ---
 
 Made with Rust by security professionals, for security professionals.
+
 
